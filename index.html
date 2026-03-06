@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upsell Store ROI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .slider-thumb::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #2563eb;
+            cursor: pointer;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: #e2e8f0;
+            height: 6px;
+            border-radius: 5px;
+        }
+        .hidden-controls {
+            display: none;
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-900">
+
+    <div class="max-w-6xl mx-auto px-4 py-8 md:py-16">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">
+                How much extra can you earn?
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+                Plug in your numbers below to see how the TouchStay Store pays for itself.
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8 items-start">
+            
+            <!-- Left Column: Inputs -->
+            <div class="space-y-6">
+                <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-8">
+                    <h2 class="text-xl font-bold text-slate-800 border-b pb-4">Your Setup</h2>
+                    
+                    <!-- Number of Properties -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label class="font-semibold text-slate-700">How many properties do you have?</label>
+                            <input type="number" id="numPropsInput" value="5" min="1" max="100" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <input type="range" id="numPropsSlider" value="5" min="1" max="100" class="w-full slider-thumb">
+                    </div>
+
+                    <!-- Current TouchStay Invoice -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label class="font-semibold text-slate-700">Your current TouchStay bill</label>
+                            <div class="flex items-center">
+                                <span class="mr-1 text-slate-400">$</span>
+                                <input type="number" id="currentInvoiceInput" value="40" min="1" max="2000" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                        <input type="range" id="currentInvoiceSlider" value="40" min="1" max="1000" class="w-full slider-thumb">
+                        <p class="text-xs text-slate-400 italic">We've pre-filled this based on our standard pricing</p>
+                    </div>
+
+                    <!-- Extra product/service value -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label class="font-semibold text-slate-700">Extra product/service value</label>
+                            <div class="flex items-center">
+                                <span class="mr-1 text-slate-400">$</span>
+                                <input type="number" id="checkoutPriceInput" value="35" min="5" max="200" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                        <input type="range" id="checkoutPriceSlider" value="35" min="5" max="200" class="w-full slider-thumb">
+                        <p class="text-xs text-slate-400">ex: Late Check out / Early Check in fee</p>
+                    </div>
+                </div>
+
+                <!-- Assumptions Section -->
+                <div class="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-lg font-bold text-slate-800">Our Calculations</h3>
+                        <button id="toggleAssumptions" class="text-sm text-blue-600 font-semibold hover:underline">
+                            Change Assumptions
+                        </button>
+                    </div>
+                    
+                    <div id="assumptionStatements" class="space-y-3 text-slate-600 text-sm">
+                        <p>• We assume <span class="font-bold text-slate-800" id="statStays">15</span> guest bookings per property each month.</p>
+                        <p>• We assume <span class="font-bold text-slate-800" id="statRate">15</span>% of guests will buy an extra service.</p>
+                        <p>• We assume <span class="font-bold text-slate-800" id="statMargin">95</span>% of that price is pure profit for you.</p>
+                    </div>
+
+                    <div id="assumptionControls" class="hidden-controls space-y-6 pt-4">
+                        <div class="space-y-3">
+                            <label class="text-sm font-medium text-slate-700 flex justify-between">
+                                Bookings / Month <span id="valStays" class="font-bold">15</span>
+                            </label>
+                            <input type="range" id="staysSlider" value="15" min="1" max="30" class="w-full slider-thumb">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-sm font-medium text-slate-700 flex justify-between">
+                                % of guests who buy <span id="valRate" class="font-bold">15</span>%
+                            </label>
+                            <input type="range" id="purchaseRateSlider" value="15" min="1" max="50" class="w-full slider-thumb">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-sm font-medium text-slate-700 flex justify-between">
+                                Your take-home margin <span id="valMargin" class="font-bold">95</span>%
+                            </label>
+                            <input type="range" id="marginSlider" value="95" min="50" max="100" class="w-full slider-thumb">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Results Card -->
+            <div class="bg-slate-900 rounded-2xl shadow-xl overflow-hidden text-white flex flex-col h-full lg:sticky lg:top-8">
+                <div class="p-8 md:p-10 flex-grow">
+                    <div class="space-y-8">
+                        <!-- Cost Section -->
+                        <div class="grid grid-cols-2 gap-4 pb-4">
+                            <div>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Price to add Store</p>
+                                <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">40.00</span>/mo</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Per Property</p>
+                                <p class="text-xl font-bold text-blue-400">+$8.00</p>
+                            </div>
+                        </div>
+
+                        <!-- Breakeven Banner (Per Property) -->
+                        <div class="bg-blue-600/20 border border-blue-600/30 rounded-xl p-4 flex items-center space-x-3">
+                            <div class="bg-blue-600 rounded-full p-1 flex-shrink-0">
+                                <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <p class="text-sm text-blue-100">
+                                Sell an average of <span id="resBreakeven" class="font-bold text-white underline underline-offset-2">0.4</span> items per property each month to pay for your <span class="font-bold text-white">entire</span> bill!
+                            </p>
+                        </div>
+
+                        <div class="border-b border-slate-700 h-px"></div>
+
+                        <!-- Main Results -->
+                        <div class="pt-2">
+                            <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Estimated Extra Monthly Income</p>
+                            <p class="text-5xl md:text-6xl font-black text-emerald-400 leading-tight">$<span id="resNetMonthlyProfit">354.38</span></p>
+                            <p class="text-slate-400 text-sm mt-2 italic text-balance">This is your take-home after paying for the Store upgrade.</p>
+                        </div>
+
+                        <div>
+                            <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Total Extra Annual Income</p>
+                            <p class="text-2xl font-bold text-emerald-500">+$<span id="resAnnualProfit">4,252</span> / year</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Action -->
+                <div class="p-8 text-center bg-slate-800/50">
+                    <button class="w-full py-4 px-6 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-all shadow-lg active:scale-[0.98] text-lg">
+                        Get Started with Store
+                    </button>
+                    <p class="mt-4 text-xs text-slate-500">Start earning more from every booking today.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const UPGRADE_COST_PER_PROP = 8.00; 
+
+        const getTieredPricing = (props) => {
+            if (props <= 1) return 10.00;
+            if (props <= 2) return 18.00;
+            if (props <= 5) return 40.00;
+            if (props <= 10) return 75.00;
+            if (props <= 15) return 110.00;
+            if (props <= 20) return 140.00;
+            if (props <= 25) return 170.00;
+            if (props <= 30) return 200.00;
+            if (props <= 40) return 255.00;
+            if (props <= 50) return 300.00;
+            if (props <= 60) return 350.00;
+            if (props <= 70) return 400.00;
+            if (props <= 80) return 450.00;
+            if (props <= 90) return 500.00;
+            if (props <= 100) return 550.00;
+            return props * 5.50;
+        };
+
+        const inputs = {
+            numProps: document.getElementById('numPropsInput'),
+            numPropsSlider: document.getElementById('numPropsSlider'),
+            currentInvoice: document.getElementById('currentInvoiceInput'),
+            currentInvoiceSlider: document.getElementById('currentInvoiceSlider'),
+            checkoutPrice: document.getElementById('checkoutPriceInput'),
+            checkoutPriceSlider: document.getElementById('checkoutPriceSlider'),
+            stays: document.getElementById('staysSlider'),
+            rate: document.getElementById('purchaseRateSlider'),
+            margin: document.getElementById('marginSlider')
+        };
+
+        const displays = {
+            resTotalExtraCost: document.getElementById('resTotalExtraCost'),
+            resNetMonthlyProfit: document.getElementById('resNetMonthlyProfit'),
+            resAnnualProfit: document.getElementById('resAnnualProfit'),
+            resBreakeven: document.getElementById('resBreakeven'),
+            statStays: document.getElementById('statStays'),
+            statRate: document.getElementById('statRate'),
+            statMargin: document.getElementById('statMargin'),
+            valStays: document.getElementById('valStays'),
+            valRate: document.getElementById('valRate'),
+            valMargin: document.getElementById('valMargin')
+        };
+
+        function init() {
+            const sync = (input, slider) => {
+                input.addEventListener('input', () => { slider.value = input.value; calculate(); });
+                slider.addEventListener('input', () => { input.value = slider.value; calculate(); });
+            };
+
+            sync(inputs.numProps, inputs.numPropsSlider);
+            sync(inputs.currentInvoice, inputs.currentInvoiceSlider);
+            sync(inputs.checkoutPrice, inputs.checkoutPriceSlider);
+
+            const updateInvoiceDefault = () => {
+                const props = parseInt(inputs.numProps.value) || 1;
+                const val = getTieredPricing(props);
+                inputs.currentInvoice.value = val;
+                inputs.currentInvoiceSlider.value = val;
+                calculate();
+            };
+
+            inputs.numPropsSlider.addEventListener('input', updateInvoiceDefault);
+            inputs.numProps.addEventListener('input', updateInvoiceDefault);
+
+            [inputs.stays, inputs.rate, inputs.margin].forEach(el => {
+                el.addEventListener('input', calculate);
+            });
+
+            document.getElementById('toggleAssumptions').addEventListener('click', function() {
+                const controls = document.getElementById('assumptionControls');
+                const statements = document.getElementById('assumptionStatements');
+                const isHidden = controls.classList.contains('hidden-controls');
+                
+                if(isHidden) {
+                    controls.classList.remove('hidden-controls');
+                    statements.classList.add('hidden-controls');
+                    this.innerText = "Hide Settings";
+                } else {
+                    controls.classList.add('hidden-controls');
+                    statements.classList.remove('hidden-controls');
+                    this.innerText = "Change Assumptions";
+                }
+            });
+
+            calculate();
+        }
+
+        function format(num) {
+            return num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function calculate() {
+            const props = parseFloat(inputs.numProps.value) || 0;
+            const currentInvoice = parseFloat(inputs.currentInvoice.value) || 0;
+            const checkoutPrice = parseFloat(inputs.checkoutPrice.value) || 0;
+            const stays = parseFloat(inputs.stays.value);
+            const rate = parseFloat(inputs.rate.value) / 100;
+            const margin = parseFloat(inputs.margin.value) / 100;
+
+            const totalExtraCost = props * UPGRADE_COST_PER_PROP;
+            const newTotalInvoice = currentInvoice + totalExtraCost;
+
+            const totalStays = props * stays;
+            const projectedSales = totalStays * rate;
+            const profitPerSale = checkoutPrice * margin;
+            const grossMonthlyProfit = projectedSales * profitPerSale;
+            
+            const netMonthlyGain = grossMonthlyProfit - totalExtraCost;
+            const annualProfit = netMonthlyGain * 12;
+
+            // Breakeven logic (Total bill / Profit per sale) / Number of properties
+            let breakevenPerProp = 0;
+            if (profitPerSale > 0 && props > 0) {
+                const totalSalesNeeded = newTotalInvoice / profitPerSale;
+                breakevenPerProp = totalSalesNeeded / props;
+            }
+
+            displays.resTotalExtraCost.innerText = format(totalExtraCost);
+            displays.resNetMonthlyProfit.innerText = format(Math.max(0, netMonthlyGain));
+            displays.resAnnualProfit.innerText = format(Math.max(0, annualProfit), 0);
+            
+            // Format breakeven to 1 decimal place if it's small, otherwise round up
+            displays.resBreakeven.innerText = breakevenPerProp < 1 
+                ? breakevenPerProp.toFixed(1) 
+                : Math.ceil(breakevenPerProp);
+
+            displays.statStays.innerText = stays;
+            displays.statRate.innerText = (rate * 100).toFixed(0);
+            displays.statMargin.innerText = (margin * 100).toFixed(0);
+            
+            displays.valStays.innerText = stays;
+            displays.valRate.innerText = (rate * 100).toFixed(0);
+            displays.valMargin.innerText = (margin * 100).toFixed(0);
+
+            const profitEl = displays.resNetMonthlyProfit.parentElement;
+            if (netMonthlyGain <= 0) {
+                profitEl.classList.remove('text-emerald-400');
+                profitEl.classList.add('text-slate-500');
+            } else {
+                profitEl.classList.add('text-emerald-400');
+                profitEl.classList.remove('text-slate-500');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
