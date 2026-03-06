@@ -66,9 +66,9 @@
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <label class="font-semibold text-slate-700">How many properties do you have?</label>
-                            <input type="number" id="numPropsInput" value="5" min="1" max="100" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            <input type="number" id="numPropsInput" value="5" min="1" max="500" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
-                        <input type="range" id="numPropsSlider" value="5" min="1" max="100" class="w-full slider-thumb">
+                        <input type="range" id="numPropsSlider" value="5" min="1" max="250" class="w-full slider-thumb">
                     </div>
 
                     <!-- Current TouchStay Invoice -->
@@ -80,7 +80,7 @@
                                 <input type="number" id="currentInvoiceInput" value="35.50" min="1" step="0.01" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                             </div>
                         </div>
-                        <input type="range" id="currentInvoiceSlider" value="35.50" min="1" max="1000" step="0.1" class="w-full slider-thumb">
+                        <input type="range" id="currentInvoiceSlider" value="35.50" min="1" max="1500" step="0.1" class="w-full slider-thumb">
                         <p class="text-xs text-slate-400 italic">Pre-filled based on your current property count</p>
                     </div>
 
@@ -90,10 +90,10 @@
                             <label class="font-semibold text-slate-700">Extra product/service value</label>
                             <div class="flex items-center">
                                 <span class="mr-1 text-slate-400">$</span>
-                                <input type="number" id="checkoutPriceInput" value="35" min="5" max="200" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                                <input type="number" id="checkoutPriceInput" value="25" min="5" max="200" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                             </div>
                         </div>
-                        <input type="range" id="checkoutPriceSlider" value="35" min="5" max="200" class="w-full slider-thumb">
+                        <input type="range" id="checkoutPriceSlider" value="25" min="5" max="200" class="w-full slider-thumb">
                         <p class="text-xs text-slate-400">ex: Late Check out / Early Check in fee</p>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                     </div>
                     
                     <div id="assumptionStatements" class="space-y-3 text-slate-600 text-sm">
-                        <p>• We assume <span class="font-bold text-slate-800" id="statStays">15</span> guest bookings per property each month.</p>
+                        <p>• We assume <span class="font-bold text-slate-800" id="statStays">10</span> guest bookings per property each month.</p>
                         <p>• We assume <span class="font-bold text-slate-800" id="statRate">15</span>% of guests will buy an extra service.</p>
                         <p>• We assume <span class="font-bold text-slate-800" id="statMargin">95</span>% of that price is pure profit for you.</p>
                     </div>
@@ -116,9 +116,9 @@
                     <div id="assumptionControls" class="hidden-controls space-y-6 pt-4">
                         <div class="space-y-3">
                             <label class="text-sm font-medium text-slate-700 flex justify-between">
-                                Bookings / Month <span id="valStays" class="font-bold">15</span>
+                                Bookings / Month <span id="valStays" class="font-bold">10</span>
                             </label>
-                            <input type="range" id="staysSlider" value="15" min="1" max="30" class="w-full slider-thumb">
+                            <input type="range" id="staysSlider" value="10" min="1" max="30" class="w-full slider-thumb">
                         </div>
                         <div class="space-y-3">
                             <label class="text-sm font-medium text-slate-700 flex justify-between">
@@ -183,7 +183,7 @@
                 <!-- Footer Action -->
                 <div class="p-8 text-center bg-slate-800/50">
                     <button class="w-full py-4 px-6 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-all shadow-lg active:scale-[0.98] text-lg">
-                        Get Started with Store
+                        Upgrade & Get started with Store
                     </button>
                     <p class="mt-4 text-xs text-slate-500">Start earning more from every booking today.</p>
                 </div>
@@ -193,7 +193,7 @@
     </div>
 
     <script>
-        // Data from the user's spreadsheet
+        // Data from the user's spreadsheet (up to 90 properties)
         const pricingData = {
             1: { growth: 15.0, current: 12.5 },
             2: { growth: 26.4, current: 19.0 },
@@ -284,17 +284,7 @@
             87: { growth: 387.7, current: 287.0 },
             88: { growth: 391.4, current: 290.0 },
             89: { growth: 395.1, current: 293.0 },
-            90: { growth: 398.8, current: 296.0 },
-            91: { growth: 402.5, current: 299.0 },
-            92: { growth: 406.2, current: 302.0 },
-            93: { growth: 409.9, current: 305.0 },
-            94: { growth: 413.6, current: 308.0 },
-            95: { growth: 417.3, current: 311.0 },
-            96: { growth: 421.0, current: 314.0 },
-            97: { growth: 424.7, current: 317.0 },
-            98: { growth: 428.4, current: 320.0 },
-            99: { growth: 432.1, current: 323.0 },
-            100: { growth: 435.8, current: 326.0 }
+            90: { growth: 398.8, current: 296.0 }
         };
 
         const inputs = {
@@ -323,6 +313,19 @@
             valMargin: document.getElementById('valMargin')
         };
 
+        function getPlanPrices(props) {
+            if (props <= 90) {
+                return pricingData[props] || { growth: 0, current: 0 };
+            } else {
+                const base90 = pricingData[90];
+                const extra = props - 90;
+                return {
+                    growth: base90.growth + (extra * 2.4),
+                    current: base90.current + (extra * 2.6)
+                };
+            }
+        }
+
         function init() {
             const sync = (input, slider) => {
                 input.addEventListener('input', () => { slider.value = input.value; calculate(); });
@@ -334,8 +337,8 @@
             sync(inputs.checkoutPrice, inputs.checkoutPriceSlider);
 
             const updateInvoiceDefault = () => {
-                const props = Math.max(1, Math.min(100, parseInt(inputs.numProps.value) || 1));
-                const data = pricingData[props] || { growth: 0, current: 0 };
+                const props = Math.max(1, parseInt(inputs.numProps.value) || 1);
+                const data = getPlanPrices(props);
                 
                 inputs.currentInvoice.value = data.current.toFixed(2);
                 inputs.currentInvoiceSlider.value = data.current;
@@ -373,19 +376,18 @@
         }
 
         function calculate() {
-            const props = Math.max(1, Math.min(100, parseInt(inputs.numProps.value) || 1));
+            const props = Math.max(1, parseInt(inputs.numProps.value) || 1);
             const userCurrentInvoice = parseFloat(inputs.currentInvoice.value) || 0;
             const checkoutPrice = parseFloat(inputs.checkoutPrice.value) || 0;
             const stays = parseFloat(inputs.stays.value);
             const rate = parseFloat(inputs.rate.value) / 100;
             const margin = parseFloat(inputs.margin.value) / 100;
 
-            // Get standard growth price for this quantity
-            const data = pricingData[props] || { growth: 0, current: 0 };
+            const data = getPlanPrices(props);
             
             // Price to add Store = Growth Plan Price - User's Current Bill
             const totalExtraCost = Math.max(0, data.growth - userCurrentInvoice);
-            const newTotalInvoice = userCurrentInvoice + totalExtraCost; // essentially the growth price
+            const newTotalInvoice = userCurrentInvoice + totalExtraCost;
 
             const totalStays = props * stays;
             const projectedSales = totalStays * rate;
@@ -395,7 +397,6 @@
             const netMonthlyGain = grossMonthlyProfit - totalExtraCost;
             const annualProfit = netMonthlyGain * 12;
 
-            // Breakeven logic (Total bill / Profit per sale) / Number of properties
             let breakevenPerProp = 0;
             if (profitPerSale > 0 && props > 0) {
                 const totalSalesNeeded = newTotalInvoice / profitPerSale;
