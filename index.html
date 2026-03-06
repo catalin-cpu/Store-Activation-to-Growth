@@ -44,29 +44,38 @@
 </head>
 <body class="antialiased text-slate-900">
 
-    <!-- Language Selector -->
-    <div class="max-w-6xl mx-auto px-4 pt-6 flex justify-end">
-        <div class="inline-flex bg-white rounded-lg border border-slate-200 p-1 shadow-sm">
-            <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white">EN</button>
-            <button onclick="setLanguage('ro')" id="btn-ro" class="px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100">RO</button>
-        </div>
-    </div>
+    <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
+        <!-- Header with Balanced Alignment -->
+        <div class="mb-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 mb-3">
+                <!-- Left spacer for desktop centering -->
+                <div class="hidden md:block"></div>
+                
+                <!-- Centered Title -->
+                <h1 id="t-header" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 text-center">
+                    An upgrade that pays for itself
+                </h1>
+                
+                <!-- Language Selector Aligned Right -->
+                <div class="flex justify-center md:justify-end">
+                    <div class="inline-flex bg-white rounded-lg border border-slate-200 p-1 shadow-sm">
+                        <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white">EN</button>
+                        <button onclick="setLanguage('ro')" id="btn-ro" class="px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100">RO</button>
+                    </div>
+                </div>
+            </div>
 
-    <div class="max-w-6xl mx-auto px-4 py-4 md:py-10">
-        <!-- Header -->
-        <div class="text-center mb-10">
-            <h1 id="t-header" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">
-                An upgrade that pays for itself
-            </h1>
-            <p id="t-subheader" class="text-lg text-slate-600 max-w-2xl mx-auto mb-6">
+            <p id="t-subheader" class="text-lg text-slate-600 max-w-2xl mx-auto text-center mb-6">
                 Let's see how it pays for itself and makes more money for you.
             </p>
             
             <!-- Growth Plan Note -->
-            <div class="inline-block bg-blue-50 border border-blue-100 rounded-xl px-6 py-4 max-w-3xl">
-                <p id="t-growthNote" class="text-blue-800 text-sm md:text-base leading-relaxed">
-                    Our new <strong>Store</strong> functionality is available in the new <strong>Growth Price plan</strong>.
-                </p>
+            <div class="text-center">
+                <div class="inline-block bg-blue-50 border border-blue-100 rounded-xl px-6 py-4 max-w-3xl">
+                    <p id="t-growthNote" class="text-blue-800 text-sm md:text-base leading-relaxed">
+                        Our new <strong>Store</strong> functionality is available in the new <strong>Growth Price plan</strong>.
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -269,7 +278,6 @@
 
         let currentLang = 'en';
 
-        // Pricing Data
         const pricingData = {
             1: { growth: 15.0, current: 12.5 }, 2: { growth: 26.4, current: 19.0 }, 3: { growth: 36.1, current: 24.5 },
             4: { growth: 44.7, current: 30.0 }, 5: { growth: 52.6, current: 35.5 }, 6: { growth: 59.9, current: 38.3 },
