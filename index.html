@@ -77,11 +77,11 @@
                             <label class="font-semibold text-slate-700">Your current TouchStay bill</label>
                             <div class="flex items-center">
                                 <span class="mr-1 text-slate-400">$</span>
-                                <input type="number" id="currentInvoiceInput" value="40" min="1" max="2000" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                                <input type="number" id="currentInvoiceInput" value="35.50" min="1" step="0.01" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                             </div>
                         </div>
-                        <input type="range" id="currentInvoiceSlider" value="40" min="1" max="1000" class="w-full slider-thumb">
-                        <p class="text-xs text-slate-400 italic">We've pre-filled this based on our standard pricing</p>
+                        <input type="range" id="currentInvoiceSlider" value="35.50" min="1" max="1000" step="0.1" class="w-full slider-thumb">
+                        <p class="text-xs text-slate-400 italic">Pre-filled based on your current property count</p>
                     </div>
 
                     <!-- Extra product/service value -->
@@ -144,11 +144,11 @@
                         <div class="grid grid-cols-2 gap-4 pb-4">
                             <div>
                                 <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Price to add Store</p>
-                                <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">40.00</span>/mo</p>
+                                <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">17.10</span>/mo</p>
                             </div>
                             <div>
                                 <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Per Property</p>
-                                <p class="text-xl font-bold text-blue-400">+$8.00</p>
+                                <p class="text-xl font-bold text-blue-400">+$<span id="resPerPropCost">3.42</span></p>
                             </div>
                         </div>
 
@@ -193,25 +193,108 @@
     </div>
 
     <script>
-        const UPGRADE_COST_PER_PROP = 8.00; 
-
-        const getTieredPricing = (props) => {
-            if (props <= 1) return 10.00;
-            if (props <= 2) return 18.00;
-            if (props <= 5) return 40.00;
-            if (props <= 10) return 75.00;
-            if (props <= 15) return 110.00;
-            if (props <= 20) return 140.00;
-            if (props <= 25) return 170.00;
-            if (props <= 30) return 200.00;
-            if (props <= 40) return 255.00;
-            if (props <= 50) return 300.00;
-            if (props <= 60) return 350.00;
-            if (props <= 70) return 400.00;
-            if (props <= 80) return 450.00;
-            if (props <= 90) return 500.00;
-            if (props <= 100) return 550.00;
-            return props * 5.50;
+        // Data from the user's spreadsheet
+        const pricingData = {
+            1: { growth: 15.0, current: 12.5 },
+            2: { growth: 26.4, current: 19.0 },
+            3: { growth: 36.1, current: 24.5 },
+            4: { growth: 44.7, current: 30.0 },
+            5: { growth: 52.6, current: 35.5 },
+            6: { growth: 59.9, current: 38.3 },
+            7: { growth: 66.8, current: 41.1 },
+            8: { growth: 73.3, current: 43.9 },
+            9: { growth: 79.5, current: 46.7 },
+            10: { growth: 85.5, current: 49.5 },
+            11: { growth: 91.2, current: 53.0 },
+            12: { growth: 96.8, current: 56.5 },
+            13: { growth: 102.2, current: 60.0 },
+            14: { growth: 107.4, current: 63.5 },
+            15: { growth: 112.5, current: 67.0 },
+            16: { growth: 117.4, current: 70.4 },
+            17: { growth: 122.2, current: 73.8 },
+            18: { growth: 126.9, current: 77.2 },
+            19: { growth: 131.5, current: 80.6 },
+            20: { growth: 136.0, current: 84.0 },
+            21: { growth: 140.4, current: 87.3 },
+            22: { growth: 144.7, current: 90.6 },
+            23: { growth: 149.0, current: 93.9 },
+            24: { growth: 153.1, current: 97.2 },
+            25: { growth: 157.2, current: 100.5 },
+            26: { growth: 161.2, current: 103.7 },
+            27: { growth: 165.2, current: 106.9 },
+            28: { growth: 169.1, current: 110.1 },
+            29: { growth: 172.9, current: 113.3 },
+            30: { growth: 176.7, current: 116.5 },
+            31: { growth: 180.4, current: 119.5 },
+            32: { growth: 184.2, current: 122.5 },
+            33: { growth: 187.9, current: 125.5 },
+            34: { growth: 191.6, current: 128.5 },
+            35: { growth: 195.3, current: 131.5 },
+            36: { growth: 199.0, current: 134.5 },
+            37: { growth: 202.7, current: 137.5 },
+            38: { growth: 206.4, current: 140.5 },
+            39: { growth: 210.1, current: 143.5 },
+            40: { growth: 213.8, current: 146.5 },
+            41: { growth: 217.5, current: 149.5 },
+            42: { growth: 221.2, current: 152.5 },
+            43: { growth: 224.9, current: 155.5 },
+            44: { growth: 228.6, current: 158.5 },
+            45: { growth: 232.3, current: 161.5 },
+            46: { growth: 236.0, current: 164.5 },
+            47: { growth: 239.7, current: 167.5 },
+            48: { growth: 243.4, current: 170.5 },
+            49: { growth: 247.1, current: 173.5 },
+            50: { growth: 250.8, current: 176.5 },
+            51: { growth: 254.5, current: 179.9 },
+            52: { growth: 258.2, current: 182.8 },
+            53: { growth: 261.9, current: 185.7 },
+            54: { growth: 265.6, current: 188.6 },
+            55: { growth: 269.3, current: 191.5 },
+            56: { growth: 273.0, current: 194.4 },
+            57: { growth: 276.7, current: 197.3 },
+            58: { growth: 280.4, current: 200.2 },
+            59: { growth: 284.1, current: 203.1 },
+            60: { growth: 287.8, current: 206.0 },
+            61: { growth: 291.5, current: 209.0 },
+            62: { growth: 295.2, current: 212.0 },
+            63: { growth: 298.9, current: 215.0 },
+            64: { growth: 302.6, current: 218.0 },
+            65: { growth: 306.3, current: 221.0 },
+            66: { growth: 310.0, current: 224.0 },
+            67: { growth: 313.7, current: 227.0 },
+            68: { growth: 317.4, current: 230.0 },
+            69: { growth: 321.1, current: 233.0 },
+            70: { growth: 324.8, current: 236.0 },
+            71: { growth: 328.5, current: 239.0 },
+            72: { growth: 332.2, current: 242.0 },
+            73: { growth: 335.9, current: 245.0 },
+            74: { growth: 339.6, current: 248.0 },
+            75: { growth: 343.3, current: 251.0 },
+            76: { growth: 347.0, current: 254.0 },
+            77: { growth: 350.7, current: 257.0 },
+            78: { growth: 354.4, current: 260.0 },
+            79: { growth: 358.1, current: 263.0 },
+            80: { growth: 361.8, current: 266.0 },
+            81: { growth: 365.5, current: 269.0 },
+            82: { growth: 369.2, current: 272.0 },
+            83: { growth: 372.9, current: 275.0 },
+            84: { growth: 376.6, current: 278.0 },
+            85: { growth: 380.3, current: 281.0 },
+            86: { growth: 384.0, current: 284.0 },
+            87: { growth: 387.7, current: 287.0 },
+            88: { growth: 391.4, current: 290.0 },
+            89: { growth: 395.1, current: 293.0 },
+            90: { growth: 398.8, current: 296.0 },
+            91: { growth: 402.5, current: 299.0 },
+            92: { growth: 406.2, current: 302.0 },
+            93: { growth: 409.9, current: 305.0 },
+            94: { growth: 413.6, current: 308.0 },
+            95: { growth: 417.3, current: 311.0 },
+            96: { growth: 421.0, current: 314.0 },
+            97: { growth: 424.7, current: 317.0 },
+            98: { growth: 428.4, current: 320.0 },
+            99: { growth: 432.1, current: 323.0 },
+            100: { growth: 435.8, current: 326.0 }
         };
 
         const inputs = {
@@ -228,6 +311,7 @@
 
         const displays = {
             resTotalExtraCost: document.getElementById('resTotalExtraCost'),
+            resPerPropCost: document.getElementById('resPerPropCost'),
             resNetMonthlyProfit: document.getElementById('resNetMonthlyProfit'),
             resAnnualProfit: document.getElementById('resAnnualProfit'),
             resBreakeven: document.getElementById('resBreakeven'),
@@ -250,10 +334,11 @@
             sync(inputs.checkoutPrice, inputs.checkoutPriceSlider);
 
             const updateInvoiceDefault = () => {
-                const props = parseInt(inputs.numProps.value) || 1;
-                const val = getTieredPricing(props);
-                inputs.currentInvoice.value = val;
-                inputs.currentInvoiceSlider.value = val;
+                const props = Math.max(1, Math.min(100, parseInt(inputs.numProps.value) || 1));
+                const data = pricingData[props] || { growth: 0, current: 0 };
+                
+                inputs.currentInvoice.value = data.current.toFixed(2);
+                inputs.currentInvoiceSlider.value = data.current;
                 calculate();
             };
 
@@ -288,15 +373,19 @@
         }
 
         function calculate() {
-            const props = parseFloat(inputs.numProps.value) || 0;
-            const currentInvoice = parseFloat(inputs.currentInvoice.value) || 0;
+            const props = Math.max(1, Math.min(100, parseInt(inputs.numProps.value) || 1));
+            const userCurrentInvoice = parseFloat(inputs.currentInvoice.value) || 0;
             const checkoutPrice = parseFloat(inputs.checkoutPrice.value) || 0;
             const stays = parseFloat(inputs.stays.value);
             const rate = parseFloat(inputs.rate.value) / 100;
             const margin = parseFloat(inputs.margin.value) / 100;
 
-            const totalExtraCost = props * UPGRADE_COST_PER_PROP;
-            const newTotalInvoice = currentInvoice + totalExtraCost;
+            // Get standard growth price for this quantity
+            const data = pricingData[props] || { growth: 0, current: 0 };
+            
+            // Price to add Store = Growth Plan Price - User's Current Bill
+            const totalExtraCost = Math.max(0, data.growth - userCurrentInvoice);
+            const newTotalInvoice = userCurrentInvoice + totalExtraCost; // essentially the growth price
 
             const totalStays = props * stays;
             const projectedSales = totalStays * rate;
@@ -314,10 +403,10 @@
             }
 
             displays.resTotalExtraCost.innerText = format(totalExtraCost);
+            displays.resPerPropCost.innerText = format(totalExtraCost / props);
             displays.resNetMonthlyProfit.innerText = format(Math.max(0, netMonthlyGain));
             displays.resAnnualProfit.innerText = format(Math.max(0, annualProfit), 0);
             
-            // Format breakeven to 1 decimal place if it's small, otherwise round up
             displays.resBreakeven.innerText = breakevenPerProp < 1 
                 ? breakevenPerProp.toFixed(1) 
                 : Math.ceil(breakevenPerProp);
