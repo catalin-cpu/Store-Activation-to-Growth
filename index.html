@@ -44,13 +44,21 @@
 </head>
 <body class="antialiased text-slate-900">
 
-    <div class="max-w-6xl mx-auto px-4 py-8 md:py-16">
+    <!-- Language Selector -->
+    <div class="max-w-6xl mx-auto px-4 pt-6 flex justify-end">
+        <div class="inline-flex bg-white rounded-lg border border-slate-200 p-1 shadow-sm">
+            <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white">EN</button>
+            <button onclick="setLanguage('ro')" id="btn-ro" class="px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100">RO</button>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-4 py-4 md:py-10">
         <!-- Header -->
         <div class="text-center mb-10">
-            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">
+            <h1 id="t-header" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 mb-3">
                 How much extra can you earn?
             </h1>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto">
+            <p id="t-subheader" class="text-lg text-slate-600 max-w-2xl mx-auto">
                 Plug in your numbers below to see how the TouchStay Store pays for itself.
             </p>
         </div>
@@ -60,12 +68,12 @@
             <!-- Left Column: Inputs -->
             <div class="space-y-6">
                 <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-8">
-                    <h2 class="text-xl font-bold text-slate-800 border-b pb-4">Your Setup</h2>
+                    <h2 id="t-setup" class="text-xl font-bold text-slate-800 border-b pb-4">Your Setup</h2>
                     
                     <!-- Number of Properties -->
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <label class="font-semibold text-slate-700">How many properties do you have?</label>
+                            <label id="t-propCount" class="font-semibold text-slate-700">How many properties do you have?</label>
                             <input type="number" id="numPropsInput" value="5" min="1" max="500" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
                         <input type="range" id="numPropsSlider" value="5" min="1" max="250" class="w-full slider-thumb">
@@ -74,61 +82,61 @@
                     <!-- Current TouchStay Invoice -->
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <label class="font-semibold text-slate-700">Your current TouchStay bill</label>
+                            <label id="t-bill" class="font-semibold text-slate-700">Your current TouchStay bill</label>
                             <div class="flex items-center">
                                 <span class="mr-1 text-slate-400">$</span>
                                 <input type="number" id="currentInvoiceInput" value="35.50" min="1" step="0.01" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                             </div>
                         </div>
                         <input type="range" id="currentInvoiceSlider" value="35.50" min="1" max="1500" step="0.1" class="w-full slider-thumb">
-                        <p class="text-xs text-slate-400 italic">Pre-filled based on your current property count</p>
+                        <p id="t-prefilled" class="text-xs text-slate-400 italic">Pre-filled based on your current property count</p>
                     </div>
 
                     <!-- Extra product/service value -->
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
-                            <label class="font-semibold text-slate-700">Extra product/service value</label>
+                            <label id="t-extraValue" class="font-semibold text-slate-700">Extra product/service value</label>
                             <div class="flex items-center">
                                 <span class="mr-1 text-slate-400">$</span>
                                 <input type="number" id="checkoutPriceInput" value="25" min="5" max="200" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                             </div>
                         </div>
                         <input type="range" id="checkoutPriceSlider" value="25" min="5" max="200" class="w-full slider-thumb">
-                        <p class="text-xs text-slate-400">ex: Late Check out / Early Check in fee</p>
+                        <p id="t-example" class="text-xs text-slate-400">ex: Late Check out / Early Check in fee</p>
                     </div>
                 </div>
 
                 <!-- Assumptions Section -->
                 <div class="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-200">
                     <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold text-slate-800">Our Calculations</h3>
+                        <h3 id="t-calcTitle" class="text-lg font-bold text-slate-800">Our Calculations</h3>
                         <button id="toggleAssumptions" class="text-sm text-blue-600 font-semibold hover:underline">
                             Change Assumptions
                         </button>
                     </div>
                     
                     <div id="assumptionStatements" class="space-y-3 text-slate-600 text-sm">
-                        <p>• We assume <span class="font-bold text-slate-800" id="statStays">10</span> guest bookings per property each month.</p>
-                        <p>• We assume <span class="font-bold text-slate-800" id="statRate">15</span>% of guests will buy an extra service.</p>
-                        <p>• We assume <span class="font-bold text-slate-800" id="statMargin">95</span>% of that price is pure profit for you.</p>
+                        <p id="t-assumpStays">• We assume <span class="font-bold text-slate-800" id="statStays">10</span> guest bookings per property each month.</p>
+                        <p id="t-assumpRate">• We assume <span class="font-bold text-slate-800" id="statRate">15</span>% of guests will buy an extra service.</p>
+                        <p id="t-assumpMargin">• We assume <span class="font-bold text-slate-800" id="statMargin">95</span>% of that price is pure profit for you.</p>
                     </div>
 
                     <div id="assumptionControls" class="hidden-controls space-y-6 pt-4">
                         <div class="space-y-3">
                             <label class="text-sm font-medium text-slate-700 flex justify-between">
-                                Bookings / Month <span id="valStays" class="font-bold">10</span>
+                                <span id="t-labelStays">Bookings / Month</span> <span id="valStays" class="font-bold">10</span>
                             </label>
                             <input type="range" id="staysSlider" value="10" min="1" max="30" class="w-full slider-thumb">
                         </div>
                         <div class="space-y-3">
                             <label class="text-sm font-medium text-slate-700 flex justify-between">
-                                % of guests who buy <span id="valRate" class="font-bold">15</span>%
+                                <span id="t-labelRate">% of guests who buy</span> <span id="valRate" class="font-bold">15</span>%
                             </label>
                             <input type="range" id="purchaseRateSlider" value="15" min="1" max="50" class="w-full slider-thumb">
                         </div>
                         <div class="space-y-3">
                             <label class="text-sm font-medium text-slate-700 flex justify-between">
-                                Your take-home margin <span id="valMargin" class="font-bold">95</span>%
+                                <span id="t-labelMargin">Your take-home margin</span> <span id="valMargin" class="font-bold">95</span>%
                             </label>
                             <input type="range" id="marginSlider" value="95" min="50" max="100" class="w-full slider-thumb">
                         </div>
@@ -143,24 +151,24 @@
                         <!-- Cost Section -->
                         <div class="grid grid-cols-2 gap-4 pb-4">
                             <div>
-                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Price to add Store</p>
+                                <p id="t-costStore" class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Price to add Store</p>
                                 <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">17.10</span>/mo</p>
                             </div>
                             <div>
-                                <p class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Per Property</p>
+                                <p id="t-costProp" class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Per Property</p>
                                 <p class="text-xl font-bold text-blue-400">+$<span id="resPerPropCost">3.42</span></p>
                             </div>
                         </div>
 
-                        <!-- Breakeven Banner (Per Property) -->
+                        <!-- Breakeven Banner -->
                         <div class="bg-blue-600/20 border border-blue-600/30 rounded-xl p-4 flex items-center space-x-3">
                             <div class="bg-blue-600 rounded-full p-1 flex-shrink-0">
                                 <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <p class="text-sm text-blue-100">
-                                Sell an average of <span id="resBreakeven" class="font-bold text-white underline underline-offset-2">0.4</span> items per property each month to pay for your <span class="font-bold text-white">entire</span> bill!
+                            <p id="t-breakevenText" class="text-sm text-blue-100">
+                                Sell an average of <span id="resBreakeven" class="font-bold text-white underline underline-offset-2">0.4</span> items per property each month to pay for your entire bill!
                             </p>
                         </div>
 
@@ -168,13 +176,13 @@
 
                         <!-- Main Results -->
                         <div class="pt-2">
-                            <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Estimated Extra Monthly Income</p>
+                            <p id="t-extraIncome" class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Estimated Extra Monthly Income</p>
                             <p class="text-5xl md:text-6xl font-black text-emerald-400 leading-tight">$<span id="resNetMonthlyProfit">354.38</span></p>
-                            <p class="text-slate-400 text-sm mt-2 italic text-balance">This is your take-home after paying for the Store upgrade.</p>
+                            <p id="t-incomeDesc" class="text-slate-400 text-sm mt-2 italic text-balance">This is your take-home after paying for the Store upgrade.</p>
                         </div>
 
                         <div>
-                            <p class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Total Extra Annual Income</p>
+                            <p id="t-annualIncome" class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Total Extra Annual Income</p>
                             <p class="text-2xl font-bold text-emerald-500">+$<span id="resAnnualProfit">4,252</span> / year</p>
                         </div>
                     </div>
@@ -182,10 +190,10 @@
 
                 <!-- Footer Action -->
                 <div class="p-8 text-center bg-slate-800/50">
-                    <button class="w-full py-4 px-6 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-all shadow-lg active:scale-[0.98] text-lg">
+                    <button id="t-cta" class="w-full py-4 px-6 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-all shadow-lg active:scale-[0.98] text-lg">
                         Upgrade & Get started with Store
                     </button>
-                    <p class="mt-4 text-xs text-slate-500">Start earning more from every booking today.</p>
+                    <p id="t-ctaSub" class="mt-4 text-xs text-slate-500">Start earning more from every booking today.</p>
                 </div>
             </div>
 
@@ -193,98 +201,97 @@
     </div>
 
     <script>
-        // Data from the user's spreadsheet (up to 90 properties)
+        const translations = {
+            en: {
+                header: "How much extra can you earn?",
+                subheader: "Plug in your numbers below to see how the TouchStay Store pays for itself.",
+                setup: "Your Setup",
+                propCount: "How many properties do you have?",
+                bill: "Your current TouchStay bill",
+                prefilled: "Pre-filled based on your current property count",
+                extraValue: "Extra product/service value",
+                example: "ex: Late Check out / Early Check in fee",
+                calcTitle: "Our Calculations",
+                btnAssump: "Change Assumptions",
+                btnAssumpHide: "Hide Settings",
+                assumpStays: "• We assume <span class='font-bold text-slate-800' id='statStays'></span> guest bookings per property each month.",
+                assumpRate: "• We assume <span class='font-bold text-slate-800' id='statRate'></span>% of guests will buy an extra service.",
+                assumpMargin: "• We assume <span class='font-bold text-slate-800' id='statMargin'></span>% of that price is pure profit for you.",
+                labelStays: "Bookings / Month",
+                labelRate: "% of guests who buy",
+                labelMargin: "Your take-home margin",
+                costStore: "Price to add Store",
+                costProp: "Per Property",
+                breakeven: "Sell an average of <span id='resBreakeven' class='font-bold text-white underline underline-offset-2'></span> items per property each month to pay for your <span class='font-bold text-white'>entire</span> bill!",
+                extraIncome: "Estimated Extra Monthly Income",
+                incomeDesc: "This is your take-home after paying for the Store upgrade.",
+                annualIncome: "Total Extra Annual Income",
+                cta: "Upgrade & Get started with Store",
+                ctaSub: "Start earning more from every booking today."
+            },
+            ro: {
+                header: "Cât de mult poți câștiga în plus?",
+                subheader: "Introdu datele tale mai jos pentru a vedea cum se plătește singur TouchStay Store.",
+                setup: "Configurarea Ta",
+                propCount: "Câte proprietăți deții?",
+                bill: "Factura ta actuală TouchStay",
+                prefilled: "Completat automat în funcție de numărul de proprietăți",
+                extraValue: "Valoare produs/serviciu extra",
+                example: "ex: Taxă Late Check-out / Early Check-in",
+                calcTitle: "Calculele Noastre",
+                btnAssump: "Modifică Ipotezele",
+                btnAssumpHide: "Ascunde Setările",
+                assumpStays: "• Estimăm <span class='font-bold text-slate-800' id='statStays'></span> rezervări pe proprietate în fiecare lună.",
+                assumpRate: "• Estimăm că <span class='font-bold text-slate-800' id='statRate'></span>% dintre oaspeți vor cumpăra un serviciu extra.",
+                assumpMargin: "• Estimăm că <span class='font-bold text-slate-800' id='statMargin'></span>% din acel preț este profit pur pentru tine.",
+                labelStays: "Rezervări / Lună",
+                labelRate: "% oaspeți care cumpără",
+                labelMargin: "Marja ta de profit",
+                costStore: "Preț adăugare Store",
+                costProp: "Per Proprietate",
+                breakeven: "Vinde în medie <span id='resBreakeven' class='font-bold text-white underline underline-offset-2'></span> articole per proprietate pe lună pentru a-ți acoperi <span class='font-bold text-white'>întreaga</span> factură!",
+                extraIncome: "Venit lunar suplimentar estimat",
+                incomeDesc: "Acesta este câștigul tău net după achitarea upgrade-ului Store.",
+                annualIncome: "Venit anual suplimentar total",
+                cta: "Upgradează și Începe cu Store",
+                ctaSub: "Începe să câștigi mai mult de la fiecare rezervare astăzi."
+            }
+        };
+
+        let currentLang = 'en';
+
+        // Data from the user's spreadsheet
         const pricingData = {
-            1: { growth: 15.0, current: 12.5 },
-            2: { growth: 26.4, current: 19.0 },
-            3: { growth: 36.1, current: 24.5 },
-            4: { growth: 44.7, current: 30.0 },
-            5: { growth: 52.6, current: 35.5 },
-            6: { growth: 59.9, current: 38.3 },
-            7: { growth: 66.8, current: 41.1 },
-            8: { growth: 73.3, current: 43.9 },
-            9: { growth: 79.5, current: 46.7 },
-            10: { growth: 85.5, current: 49.5 },
-            11: { growth: 91.2, current: 53.0 },
-            12: { growth: 96.8, current: 56.5 },
-            13: { growth: 102.2, current: 60.0 },
-            14: { growth: 107.4, current: 63.5 },
-            15: { growth: 112.5, current: 67.0 },
-            16: { growth: 117.4, current: 70.4 },
-            17: { growth: 122.2, current: 73.8 },
-            18: { growth: 126.9, current: 77.2 },
-            19: { growth: 131.5, current: 80.6 },
-            20: { growth: 136.0, current: 84.0 },
-            21: { growth: 140.4, current: 87.3 },
-            22: { growth: 144.7, current: 90.6 },
-            23: { growth: 149.0, current: 93.9 },
-            24: { growth: 153.1, current: 97.2 },
-            25: { growth: 157.2, current: 100.5 },
-            26: { growth: 161.2, current: 103.7 },
-            27: { growth: 165.2, current: 106.9 },
-            28: { growth: 169.1, current: 110.1 },
-            29: { growth: 172.9, current: 113.3 },
-            30: { growth: 176.7, current: 116.5 },
-            31: { growth: 180.4, current: 119.5 },
-            32: { growth: 184.2, current: 122.5 },
-            33: { growth: 187.9, current: 125.5 },
-            34: { growth: 191.6, current: 128.5 },
-            35: { growth: 195.3, current: 131.5 },
-            36: { growth: 199.0, current: 134.5 },
-            37: { growth: 202.7, current: 137.5 },
-            38: { growth: 206.4, current: 140.5 },
-            39: { growth: 210.1, current: 143.5 },
-            40: { growth: 213.8, current: 146.5 },
-            41: { growth: 217.5, current: 149.5 },
-            42: { growth: 221.2, current: 152.5 },
-            43: { growth: 224.9, current: 155.5 },
-            44: { growth: 228.6, current: 158.5 },
-            45: { growth: 232.3, current: 161.5 },
-            46: { growth: 236.0, current: 164.5 },
-            47: { growth: 239.7, current: 167.5 },
-            48: { growth: 243.4, current: 170.5 },
-            49: { growth: 247.1, current: 173.5 },
-            50: { growth: 250.8, current: 176.5 },
-            51: { growth: 254.5, current: 179.9 },
-            52: { growth: 258.2, current: 182.8 },
-            53: { growth: 261.9, current: 185.7 },
-            54: { growth: 265.6, current: 188.6 },
-            55: { growth: 269.3, current: 191.5 },
-            56: { growth: 273.0, current: 194.4 },
-            57: { growth: 276.7, current: 197.3 },
-            58: { growth: 280.4, current: 200.2 },
-            59: { growth: 284.1, current: 203.1 },
-            60: { growth: 287.8, current: 206.0 },
-            61: { growth: 291.5, current: 209.0 },
-            62: { growth: 295.2, current: 212.0 },
-            63: { growth: 298.9, current: 215.0 },
-            64: { growth: 302.6, current: 218.0 },
-            65: { growth: 306.3, current: 221.0 },
-            66: { growth: 310.0, current: 224.0 },
-            67: { growth: 313.7, current: 227.0 },
-            68: { growth: 317.4, current: 230.0 },
-            69: { growth: 321.1, current: 233.0 },
-            70: { growth: 324.8, current: 236.0 },
-            71: { growth: 328.5, current: 239.0 },
-            72: { growth: 332.2, current: 242.0 },
-            73: { growth: 335.9, current: 245.0 },
-            74: { growth: 339.6, current: 248.0 },
-            75: { growth: 343.3, current: 251.0 },
-            76: { growth: 347.0, current: 254.0 },
-            77: { growth: 350.7, current: 257.0 },
-            78: { growth: 354.4, current: 260.0 },
-            79: { growth: 358.1, current: 263.0 },
-            80: { growth: 361.8, current: 266.0 },
-            81: { growth: 365.5, current: 269.0 },
-            82: { growth: 369.2, current: 272.0 },
-            83: { growth: 372.9, current: 275.0 },
-            84: { growth: 376.6, current: 278.0 },
-            85: { growth: 380.3, current: 281.0 },
-            86: { growth: 384.0, current: 284.0 },
-            87: { growth: 387.7, current: 287.0 },
-            88: { growth: 391.4, current: 290.0 },
-            89: { growth: 395.1, current: 293.0 },
-            90: { growth: 398.8, current: 296.0 }
+            1: { growth: 15.0, current: 12.5 }, 2: { growth: 26.4, current: 19.0 }, 3: { growth: 36.1, current: 24.5 },
+            4: { growth: 44.7, current: 30.0 }, 5: { growth: 52.6, current: 35.5 }, 6: { growth: 59.9, current: 38.3 },
+            7: { growth: 66.8, current: 41.1 }, 8: { growth: 73.3, current: 43.9 }, 9: { growth: 79.5, current: 46.7 },
+            10: { growth: 85.5, current: 49.5 }, 11: { growth: 91.2, current: 53.0 }, 12: { growth: 96.8, current: 56.5 },
+            13: { growth: 102.2, current: 60.0 }, 14: { growth: 107.4, current: 63.5 }, 15: { growth: 112.5, current: 67.0 },
+            16: { growth: 117.4, current: 70.4 }, 17: { growth: 122.2, current: 73.8 }, 18: { growth: 126.9, current: 77.2 },
+            19: { growth: 131.5, current: 80.6 }, 20: { growth: 136.0, current: 84.0 }, 21: { growth: 140.4, current: 87.3 },
+            22: { growth: 144.7, current: 90.6 }, 23: { growth: 149.0, current: 93.9 }, 24: { growth: 153.1, current: 97.2 },
+            25: { growth: 157.2, current: 100.5 }, 26: { growth: 161.2, current: 103.7 }, 27: { growth: 165.2, current: 106.9 },
+            28: { growth: 169.1, current: 110.1 }, 29: { growth: 172.9, current: 113.3 }, 30: { growth: 176.7, current: 116.5 },
+            31: { growth: 180.4, current: 119.5 }, 32: { growth: 184.2, current: 122.5 }, 33: { growth: 187.9, current: 125.5 },
+            34: { growth: 191.6, current: 128.5 }, 35: { growth: 195.3, current: 131.5 }, 36: { growth: 199.0, current: 134.5 },
+            37: { growth: 202.7, current: 137.5 }, 38: { growth: 206.4, current: 140.5 }, 39: { growth: 210.1, current: 143.5 },
+            40: { growth: 213.8, current: 146.5 }, 41: { growth: 217.5, current: 149.5 }, 42: { growth: 221.2, current: 152.5 },
+            43: { growth: 224.9, current: 155.5 }, 44: { growth: 228.6, current: 158.5 }, 45: { growth: 232.3, current: 161.5 },
+            46: { growth: 236.0, current: 164.5 }, 47: { growth: 239.7, current: 167.5 }, 48: { growth: 243.4, current: 170.5 },
+            49: { growth: 247.1, current: 173.5 }, 50: { growth: 250.8, current: 176.5 }, 51: { growth: 254.5, current: 179.9 },
+            52: { growth: 258.2, current: 182.8 }, 53: { growth: 261.9, current: 185.7 }, 54: { growth: 265.6, current: 188.6 },
+            55: { growth: 269.3, current: 191.5 }, 56: { growth: 273.0, current: 194.4 }, 57: { growth: 276.7, current: 197.3 },
+            58: { growth: 280.4, current: 200.2 }, 59: { growth: 284.1, current: 203.1 }, 60: { growth: 287.8, current: 206.0 },
+            61: { growth: 291.5, current: 209.0 }, 62: { growth: 295.2, current: 212.0 }, 63: { growth: 298.9, current: 215.0 },
+            64: { growth: 302.6, current: 218.0 }, 65: { growth: 306.3, current: 221.0 }, 66: { growth: 310.0, current: 224.0 },
+            67: { growth: 313.7, current: 227.0 }, 68: { growth: 317.4, current: 230.0 }, 69: { growth: 321.1, current: 233.0 },
+            70: { growth: 324.8, current: 236.0 }, 71: { growth: 328.5, current: 239.0 }, 72: { growth: 332.2, current: 242.0 },
+            73: { growth: 335.9, current: 245.0 }, 74: { growth: 339.6, current: 248.0 }, 75: { growth: 343.3, current: 251.0 },
+            76: { growth: 347.0, current: 254.0 }, 77: { growth: 350.7, current: 257.0 }, 78: { growth: 354.4, current: 260.0 },
+            79: { growth: 358.1, current: 263.0 }, 80: { growth: 361.8, current: 266.0 }, 81: { growth: 365.5, current: 269.0 },
+            82: { growth: 369.2, current: 272.0 }, 83: { growth: 372.9, current: 275.0 }, 84: { growth: 376.6, current: 278.0 },
+            85: { growth: 380.3, current: 281.0 }, 86: { growth: 384.0, current: 284.0 }, 87: { growth: 387.7, current: 287.0 },
+            88: { growth: 391.4, current: 290.0 }, 89: { growth: 395.1, current: 293.0 }, 90: { growth: 398.8, current: 296.0 }
         };
 
         const inputs = {
@@ -304,14 +311,51 @@
             resPerPropCost: document.getElementById('resPerPropCost'),
             resNetMonthlyProfit: document.getElementById('resNetMonthlyProfit'),
             resAnnualProfit: document.getElementById('resAnnualProfit'),
-            resBreakeven: document.getElementById('resBreakeven'),
-            statStays: document.getElementById('statStays'),
-            statRate: document.getElementById('statRate'),
-            statMargin: document.getElementById('statMargin'),
             valStays: document.getElementById('valStays'),
             valRate: document.getElementById('valRate'),
             valMargin: document.getElementById('valMargin')
         };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // Toggle Button Styles
+            document.getElementById('btn-en').className = lang === 'en' ? 'px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white' : 'px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100';
+            document.getElementById('btn-ro').className = lang === 'ro' ? 'px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white' : 'px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100';
+
+            // Text content
+            document.getElementById('t-header').innerText = t.header;
+            document.getElementById('t-subheader').innerText = t.subheader;
+            document.getElementById('t-setup').innerText = t.setup;
+            document.getElementById('t-propCount').innerText = t.propCount;
+            document.getElementById('t-bill').innerText = t.bill;
+            document.getElementById('t-prefilled').innerText = t.prefilled;
+            document.getElementById('t-extraValue').innerText = t.extraValue;
+            document.getElementById('t-example').innerText = t.example;
+            document.getElementById('t-calcTitle').innerText = t.calcTitle;
+            
+            const assumpBtn = document.getElementById('toggleAssumptions');
+            const isAssumpHidden = document.getElementById('assumptionControls').classList.contains('hidden-controls');
+            assumpBtn.innerText = isAssumpHidden ? t.btnAssump : t.btnAssumpHide;
+
+            document.getElementById('t-assumpStays').innerHTML = t.assumpStays;
+            document.getElementById('t-assumpRate').innerHTML = t.assumpRate;
+            document.getElementById('t-assumpMargin').innerHTML = t.assumpMargin;
+            document.getElementById('t-labelStays').innerText = t.labelStays;
+            document.getElementById('t-labelRate').innerText = t.labelRate;
+            document.getElementById('t-labelMargin').innerText = t.labelMargin;
+            document.getElementById('t-costStore').innerText = t.costStore;
+            document.getElementById('t-costProp').innerText = t.costProp;
+            document.getElementById('t-breakevenText').innerHTML = t.breakeven;
+            document.getElementById('t-extraIncome').innerText = t.extraIncome;
+            document.getElementById('t-incomeDesc').innerText = t.incomeDesc;
+            document.getElementById('t-annualIncome').innerText = t.annualIncome;
+            document.getElementById('t-cta').innerText = t.cta;
+            document.getElementById('t-ctaSub').innerText = t.ctaSub;
+
+            calculate();
+        }
 
         function getPlanPrices(props) {
             if (props <= 90) {
@@ -339,7 +383,6 @@
             const updateInvoiceDefault = () => {
                 const props = Math.max(1, parseInt(inputs.numProps.value) || 1);
                 const data = getPlanPrices(props);
-                
                 inputs.currentInvoice.value = data.current.toFixed(2);
                 inputs.currentInvoiceSlider.value = data.current;
                 calculate();
@@ -348,27 +391,26 @@
             inputs.numPropsSlider.addEventListener('input', updateInvoiceDefault);
             inputs.numProps.addEventListener('input', updateInvoiceDefault);
 
-            [inputs.stays, inputs.rate, inputs.margin].forEach(el => {
-                el.addEventListener('input', calculate);
-            });
+            [inputs.stays, inputs.rate, inputs.margin].forEach(el => el.addEventListener('input', calculate));
 
             document.getElementById('toggleAssumptions').addEventListener('click', function() {
                 const controls = document.getElementById('assumptionControls');
                 const statements = document.getElementById('assumptionStatements');
                 const isHidden = controls.classList.contains('hidden-controls');
+                const t = translations[currentLang];
                 
                 if(isHidden) {
                     controls.classList.remove('hidden-controls');
                     statements.classList.add('hidden-controls');
-                    this.innerText = "Hide Settings";
+                    this.innerText = t.btnAssumpHide;
                 } else {
                     controls.classList.add('hidden-controls');
                     statements.classList.remove('hidden-controls');
-                    this.innerText = "Change Assumptions";
+                    this.innerText = t.btnAssump;
                 }
             });
 
-            calculate();
+            setLanguage('en');
         }
 
         function format(num) {
@@ -384,8 +426,6 @@
             const margin = parseFloat(inputs.margin.value) / 100;
 
             const data = getPlanPrices(props);
-            
-            // Price to add Store = Growth Plan Price - User's Current Bill
             const totalExtraCost = Math.max(0, data.growth - userCurrentInvoice);
             const newTotalInvoice = userCurrentInvoice + totalExtraCost;
 
@@ -408,13 +448,16 @@
             displays.resNetMonthlyProfit.innerText = format(Math.max(0, netMonthlyGain));
             displays.resAnnualProfit.innerText = format(Math.max(0, annualProfit), 0);
             
-            displays.resBreakeven.innerText = breakevenPerProp < 1 
-                ? breakevenPerProp.toFixed(1) 
-                : Math.ceil(breakevenPerProp);
+            const bEv = document.getElementById('resBreakeven');
+            if (bEv) bEv.innerText = breakevenPerProp < 1 ? breakevenPerProp.toFixed(1) : Math.ceil(breakevenPerProp);
 
-            displays.statStays.innerText = stays;
-            displays.statRate.innerText = (rate * 100).toFixed(0);
-            displays.statMargin.innerText = (margin * 100).toFixed(0);
+            const sStays = document.getElementById('statStays');
+            const sRate = document.getElementById('statRate');
+            const sMargin = document.getElementById('statMargin');
+            
+            if (sStays) sStays.innerText = stays;
+            if (sRate) sRate.innerText = (rate * 100).toFixed(0);
+            if (sMargin) sMargin.innerText = (margin * 100).toFixed(0);
             
             displays.valStays.innerText = stays;
             displays.valRate.innerText = (rate * 100).toFixed(0);
