@@ -48,19 +48,16 @@
         <!-- Header with Balanced Alignment -->
         <div class="mb-10">
             <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 mb-3">
-                <!-- Left spacer for desktop centering -->
                 <div class="hidden md:block"></div>
                 
-                <!-- Centered Title -->
-                <h1 id="t-header" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 text-center">
+                <h1 id="t-header" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 text-center text-balance">
                     An upgrade that pays for itself
                 </h1>
                 
-                <!-- Language Selector Aligned Right -->
                 <div class="flex justify-center md:justify-end">
                     <div class="inline-flex bg-white rounded-lg border border-slate-200 p-1 shadow-sm">
-                        <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white">EN</button>
-                        <button onclick="setLanguage('ro')" id="btn-ro" class="px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100">RO</button>
+                        <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-sm font-medium rounded-md transition-colors">EN</button>
+                        <button onclick="setLanguage('ro')" id="btn-ro" class="px-3 py-1 text-sm font-medium rounded-md transition-colors">RO</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +66,6 @@
                 Let's see how it pays for itself and makes more money for you.
             </p>
             
-            <!-- Growth Plan Note -->
             <div class="text-center">
                 <div class="inline-block bg-blue-50 border border-blue-100 rounded-xl px-6 py-4 max-w-3xl">
                     <p id="t-growthNote" class="text-blue-800 text-sm md:text-base leading-relaxed">
@@ -84,7 +80,14 @@
             <!-- Left Column: Inputs -->
             <div class="space-y-6">
                 <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-8">
-                    <h2 id="t-setup" class="text-xl font-bold text-slate-800 border-b pb-4">Your Setup</h2>
+                    <div class="flex justify-between items-center border-b pb-4">
+                        <h2 id="t-setup" class="text-xl font-bold text-slate-800">Your Setup</h2>
+                        <!-- Billing Cycle Selector -->
+                        <div class="inline-flex bg-slate-100 rounded-lg p-1">
+                            <button onclick="setBilling('monthly')" id="btn-monthly" class="px-3 py-1 text-xs font-bold rounded-md transition-all">MONTHLY</button>
+                            <button onclick="setBilling('yearly')" id="btn-yearly" class="px-3 py-1 text-xs font-bold rounded-md transition-all">YEARLY</button>
+                        </div>
+                    </div>
                     
                     <!-- Number of Properties -->
                     <div class="space-y-4">
@@ -168,7 +171,7 @@
                         <div class="grid grid-cols-2 gap-4 pb-4">
                             <div>
                                 <p id="t-costStore" class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Price to add Store</p>
-                                <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">17.10</span>/mo</p>
+                                <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">17.10</span><span class="unit-text">/mo</span></p>
                             </div>
                             <div>
                                 <p id="t-costProp" class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Per Property</p>
@@ -277,6 +280,7 @@
         };
 
         let currentLang = 'en';
+        let billingCycle = 'monthly';
 
         const pricingData = {
             1: { growth: 15.0, current: 12.5 }, 2: { growth: 26.4, current: 19.0 }, 3: { growth: 36.1, current: 24.5 },
@@ -360,16 +364,58 @@
             calculate();
         }
 
+        function setBilling(cycle) {
+            billingCycle = cycle;
+            const btnM = document.getElementById('btn-monthly');
+            const btnY = document.getElementById('btn-yearly');
+            
+            if(cycle === 'monthly') {
+                btnM.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all bg-blue-600 text-white';
+                btnY.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-700';
+                document.querySelectorAll('.unit-text').forEach(el => el.innerText = '/mo');
+            } else {
+                btnY.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all bg-blue-600 text-white';
+                btnM.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-700';
+                document.querySelectorAll('.unit-text').forEach(el => el.innerText = '/yr');
+            }
+            
+            updateInvoiceDefault();
+            calculate();
+        }
+
         function getPlanPrices(props) {
+            let data = { growth: 0, current: 0 };
             if (props <= 50) {
-                return pricingData[props] || { growth: 0, current: 0 };
+                data = { ...pricingData[props] };
             } else {
                 const base50 = pricingData[50];
                 const extra = props - 50;
-                return {
+                data = {
                     growth: base50.growth + (extra * 3.1), 
                     current: base50.current + (extra * 2.9)
                 };
+            }
+
+            // Apply 20% discount if yearly
+            if (billingCycle === 'yearly') {
+                data.growth = (data.growth * 12) * 0.8;
+                data.current = (data.current * 12) * 0.8;
+            }
+
+            return data;
+        }
+
+        function updateInvoiceDefault() {
+            const props = Math.max(1, parseInt(inputs.numProps.value) || 1);
+            const data = getPlanPrices(props);
+            inputs.currentInvoice.value = data.current.toFixed(2);
+            inputs.currentInvoiceSlider.value = data.current;
+            
+            // Adjust slider range based on billing cycle
+            if (billingCycle === 'yearly') {
+                inputs.currentInvoiceSlider.max = 15000;
+            } else {
+                inputs.currentInvoiceSlider.max = 1500;
             }
         }
 
@@ -382,14 +428,6 @@
             sync(inputs.numProps, inputs.numPropsSlider);
             sync(inputs.currentInvoice, inputs.currentInvoiceSlider);
             sync(inputs.checkoutPrice, inputs.checkoutPriceSlider);
-
-            const updateInvoiceDefault = () => {
-                const props = Math.max(1, parseInt(inputs.numProps.value) || 1);
-                const data = getPlanPrices(props);
-                inputs.currentInvoice.value = data.current.toFixed(2);
-                inputs.currentInvoiceSlider.value = data.current;
-                calculate();
-            };
 
             inputs.numPropsSlider.addEventListener('input', updateInvoiceDefault);
             inputs.numProps.addEventListener('input', updateInvoiceDefault);
@@ -414,6 +452,7 @@
             });
 
             setLanguage('en');
+            setBilling('monthly');
         }
 
         function format(num) {
@@ -430,21 +469,28 @@
 
             const data = getPlanPrices(props);
             
+            // Cost is yearly if yearly, monthly if monthly
             const totalExtraCost = Math.max(0, data.growth - userCurrentInvoice);
             const newTotalInvoice = userCurrentInvoice + totalExtraCost;
 
-            const totalStays = props * stays;
-            const projectedSales = totalStays * rate;
+            // Monthly revenue remains monthly for calculation
+            const totalStaysPerMonth = props * stays;
+            const projectedSalesPerMonth = totalStaysPerMonth * rate;
+            const netMonthlySalesIncome = projectedSalesPerMonth * checkoutPrice * margin;
             
-            const totalNetSalesIncome = projectedSales * checkoutPrice * margin;
-            const netMonthlyGain = totalNetSalesIncome - totalExtraCost;
+            // Net monthly gain depends on billing cycle split
+            const extraCostPerMonth = billingCycle === 'yearly' ? (totalExtraCost / 12) : totalExtraCost;
+            const netMonthlyGain = netMonthlySalesIncome - extraCostPerMonth;
             
             const annualProfit = netMonthlyGain * 12;
 
+            // Breakeven
             let breakevenPerProp = 0;
             const profitPerUnit = checkoutPrice * margin;
             if (profitPerUnit > 0 && props > 0) {
-                const totalSalesNeeded = newTotalInvoice / profitPerUnit;
+                // How many units to cover the total bill (monthly basis)
+                const monthlyTotalBill = billingCycle === 'yearly' ? (newTotalInvoice / 12) : newTotalInvoice;
+                const totalSalesNeeded = monthlyTotalBill / profitPerUnit;
                 breakevenPerProp = totalSalesNeeded / props;
             }
 
