@@ -7,53 +7,30 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         .slider-thumb::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            background: #2563eb;
-            cursor: pointer;
-            border-radius: 50%;
-            border: 2px solid white;
+            -webkit-appearance: none; appearance: none; width: 18px; height: 18px;
+            background: #2563eb; cursor: pointer; border-radius: 50%; border: 2px solid white;
             box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         .slider-thumb::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            background: #2563eb;
-            cursor: pointer;
-            border-radius: 50%;
-            border: 2px solid white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            width: 18px; height: 18px; background: #2563eb; cursor: pointer;
+            border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
-        input[type="range"] {
-            -webkit-appearance: none;
-            background: #e2e8f0;
-            height: 6px;
-            border-radius: 5px;
-        }
-        .hidden-controls {
-            display: none;
-        }
+        input[type="range"] { -webkit-appearance: none; background: #e2e8f0; height: 6px; border-radius: 5px; }
+        .hidden-controls { display: none; }
     </style>
 </head>
 <body class="antialiased text-slate-900">
 
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
-        <!-- Header with Balanced Alignment -->
-        <div class="mb-10">
+        <!-- Header -->
+        <div class="mb-10 text-center">
             <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 mb-3">
                 <div class="hidden md:block"></div>
-                
-                <h1 id="t-header" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 text-center text-balance">
+                <h1 id="t-header" class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 text-balance">
                     An upgrade that pays for itself
                 </h1>
-                
                 <div class="flex justify-center md:justify-end">
                     <div class="inline-flex bg-white rounded-lg border border-slate-200 p-1 shadow-sm">
                         <button onclick="setLanguage('en')" id="btn-en" class="px-3 py-1 text-sm font-medium rounded-md transition-colors">EN</button>
@@ -61,57 +38,48 @@
                     </div>
                 </div>
             </div>
-
-            <p id="t-subheader" class="text-lg text-slate-600 max-w-2xl mx-auto text-center mb-6">
+            <p id="t-subheader" class="text-lg text-slate-600 max-w-2xl mx-auto mb-6">
                 Let's see how it pays for itself and makes more money for you.
             </p>
-            
-            <div class="text-center">
-                <div class="inline-block bg-blue-50 border border-blue-100 rounded-xl px-6 py-4 max-w-3xl">
-                    <p id="t-growthNote" class="text-blue-800 text-sm md:text-base leading-relaxed">
-                        Our new <strong>Store</strong> functionality is available in the new <strong>Growth Price plan</strong>.
-                    </p>
-                </div>
+            <div class="inline-block bg-blue-50 border border-blue-100 rounded-xl px-6 py-4 max-w-3xl">
+                <p id="t-growthNote" class="text-blue-800 text-sm md:text-base leading-relaxed">
+                    Our new <strong>Store</strong> functionality is available in the new <strong>Growth Price plan</strong>.
+                </p>
             </div>
         </div>
 
         <div class="grid lg:grid-cols-2 gap-8 items-start">
-            
-            <!-- Left Column: Inputs -->
+            <!-- Left Column -->
             <div class="space-y-6">
                 <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 space-y-8">
                     <div class="flex justify-between items-center border-b pb-4">
                         <h2 id="t-setup" class="text-xl font-bold text-slate-800">Your Setup</h2>
-                        <!-- Billing Cycle Selector -->
                         <div class="inline-flex bg-slate-100 rounded-lg p-1">
                             <button onclick="setBilling('monthly')" id="btn-monthly" class="px-3 py-1 text-xs font-bold rounded-md transition-all">MONTHLY</button>
                             <button onclick="setBilling('yearly')" id="btn-yearly" class="px-3 py-1 text-xs font-bold rounded-md transition-all">YEARLY</button>
                         </div>
                     </div>
                     
-                    <!-- Number of Properties -->
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <label id="t-propCount" class="font-semibold text-slate-700">How many properties do you have?</label>
-                            <input type="number" id="numPropsInput" value="5" min="1" max="500" class="w-20 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                            <input type="number" id="numPropsInput" value="5" min="1" max="5000" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
                         <input type="range" id="numPropsSlider" value="5" min="1" max="250" class="w-full slider-thumb">
                     </div>
 
-                    <!-- Current TouchStay Invoice -->
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <label id="t-bill" class="font-semibold text-slate-700">Your current TouchStay bill</label>
                             <div class="flex items-center">
                                 <span class="mr-1 text-slate-400">$</span>
-                                <input type="number" id="currentInvoiceInput" value="35.50" min="1" step="0.01" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
+                                <input type="number" id="currentInvoiceInput" value="31.10" min="0" step="0.01" class="w-24 px-2 py-1 border border-slate-300 rounded text-center font-medium focus:ring-2 focus:ring-blue-500 outline-none">
                             </div>
                         </div>
-                        <input type="range" id="currentInvoiceSlider" value="35.50" min="1" max="1500" step="0.1" class="w-full slider-thumb">
-                        <p id="t-prefilled" class="text-xs text-slate-400 italic">Pre-filled based on your current property count</p>
+                        <input type="range" id="currentInvoiceSlider" value="31.10" min="0" max="1500" step="0.1" class="w-full slider-thumb">
+                        <p id="t-prefilled" class="text-xs text-slate-400 italic">Pre-filled with Legacy pricing for your property count</p>
                     </div>
 
-                    <!-- Extra product/service value -->
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <label id="t-extraValue" class="font-semibold text-slate-700">Extra product/service value</label>
@@ -125,21 +93,17 @@
                     </div>
                 </div>
 
-                <!-- Assumptions Section -->
+                <!-- Assumptions -->
                 <div class="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-200">
                     <div class="flex justify-between items-center mb-6">
                         <h3 id="t-calcTitle" class="text-lg font-bold text-slate-800">Our Calculations</h3>
-                        <button id="toggleAssumptions" class="text-sm text-blue-600 font-semibold hover:underline">
-                            Change Assumptions
-                        </button>
+                        <button id="toggleAssumptions" class="text-sm text-blue-600 font-semibold hover:underline">Change Assumptions</button>
                     </div>
-                    
                     <div id="assumptionStatements" class="space-y-3 text-slate-600 text-sm">
                         <p id="t-assumpStays">• We assume <span class="font-bold text-slate-800" id="statStays">10</span> guest bookings per property each month.</p>
                         <p id="t-assumpRate">• We assume <span class="font-bold text-slate-800" id="statRate">15</span>% of guests will buy an extra service.</p>
                         <p id="t-assumpMargin">• We assume <span class="font-bold text-slate-800" id="statMargin">75</span>% of that price is net profit (after tax/fees).</p>
                     </div>
-
                     <div id="assumptionControls" class="hidden-controls space-y-6 pt-4">
                         <div class="space-y-3">
                             <label class="text-sm font-medium text-slate-700 flex justify-between">
@@ -163,23 +127,20 @@
                 </div>
             </div>
 
-            <!-- Right Column: Results Card -->
+            <!-- Results Card -->
             <div class="bg-slate-900 rounded-2xl shadow-xl overflow-hidden text-white flex flex-col h-full lg:sticky lg:top-8">
                 <div class="p-8 md:p-10 flex-grow">
                     <div class="space-y-8">
-                        <!-- Cost Section -->
                         <div class="grid grid-cols-2 gap-4 pb-4">
                             <div>
                                 <p id="t-costStore" class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Price to add Store</p>
-                                <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">17.10</span><span class="unit-text">/mo</span></p>
+                                <p class="text-xl font-bold text-blue-400">+$<span id="resTotalExtraCost">0.00</span><span class="unit-text">/mo</span></p>
                             </div>
                             <div>
                                 <p id="t-costProp" class="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">Per Property</p>
-                                <p class="text-xl font-bold text-blue-400">+$<span id="resPerPropCost">3.42</span></p>
+                                <p class="text-xl font-bold text-blue-400">+$<span id="resPerPropCost">0.00</span></p>
                             </div>
                         </div>
-
-                        <!-- Breakeven Banner -->
                         <div class="bg-blue-600/20 border border-blue-600/30 rounded-xl p-4 flex items-center space-x-3">
                             <div class="bg-blue-600 rounded-full p-1 flex-shrink-0">
                                 <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -187,27 +148,21 @@
                                 </svg>
                             </div>
                             <p id="t-breakevenText" class="text-sm text-blue-100">
-                                Sell an average of <span id="resBreakeven" class="font-bold text-white underline underline-offset-2">0.5</span> items per property each month to pay for your entire bill!
+                                Sell an average of <span id="resBreakeven" class="font-bold text-white underline underline-offset-2">0.5</span> items per property each month to pay for your <span class="font-bold text-white">entire</span> bill!
                             </p>
                         </div>
-
                         <div class="border-b border-slate-700 h-px"></div>
-
-                        <!-- Main Results -->
                         <div class="pt-2">
                             <p id="t-extraIncome" class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Estimated Extra Monthly Income</p>
-                            <p class="text-5xl md:text-6xl font-black text-emerald-400 leading-tight">$<span id="resNetMonthlyProfit">247.05</span></p>
-                            <p id="t-incomeDesc" class="text-slate-400 text-sm mt-2 italic text-balance">This is your take-home profit after taxes, fees, and the software upgrade cost.</p>
+                            <p class="text-5xl md:text-6xl font-black text-emerald-400 leading-tight">$<span id="resNetMonthlyProfit">0.00</span></p>
+                            <p id="t-incomeDesc" class="text-slate-400 text-sm mt-2 italic text-balance">Take-home profit after taxes, fees, and the software upgrade cost.</p>
                         </div>
-
                         <div>
                             <p id="t-annualIncome" class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-2">Total Extra Annual Income</p>
-                            <p class="text-2xl font-bold text-emerald-500">+$<span id="resAnnualProfit">2,965</span> / year</p>
+                            <p class="text-2xl font-bold text-emerald-500">+$<span id="resAnnualProfit">0</span> / year</p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Footer Action -->
                 <div class="p-8 text-center bg-slate-800/50">
                     <button id="t-cta" class="w-full py-4 px-6 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-500 transition-all shadow-lg active:scale-[0.98] text-lg">
                         Upgrade & Get started with Store
@@ -215,11 +170,39 @@
                     <p id="t-ctaSub" class="mt-4 text-xs text-slate-500">Start earning more from every booking today.</p>
                 </div>
             </div>
-
         </div>
     </div>
 
     <script>
+        const pricingData = {
+            starter: {
+                yearly: [99, 150, 195, 240, 285, 329, 372, 414, 455, 495, 534, 572, 609, 645, 680, 714, 747, 779, 810, 840, 870, 899, 928, 956, 984, 1011, 1038, 1065, 1092, 1119, 1146, 1173, 1200, 1227, 1254, 1281, 1308, 1335, 1362, 1389, 1416, 1443, 1470, 1497, 1524, 1551, 1578, 1605, 1632, 1659, 1686, 1713, 1740, 1767, 1794, 1821, 1848, 1875, 1902, 1929, 1956, 1983, 2010, 2037, 2064, 2091, 2118, 2145, 2172, 2199, 2226, 2253, 2280, 2307, 2334, 2361, 2388, 2415, 2442, 2469, 2496, 2523, 2550, 2577, 2604, 2631, 2658, 2685, 2712, 2870],
+                monthly: [12.5, 17.6, 22.1, 26.6, 31.1, 35.5, 39.8, 44, 48.1, 52.1, 56, 59.8, 63.5, 67.1, 70.6, 74, 77.3, 80.5, 83.6, 86.6, 89.6, 92.5, 95.4, 98.2, 101, 103.7, 106.4, 109.1, 111.8, 114.5, 117.2, 119.9, 122.6, 125.3, 128, 130.7, 133.4, 136.1, 138.8, 141.5, 144.2, 146.9, 149.6, 152.3, 155, 157.7, 160.4, 163.1, 165.8, 168.5, 171.2, 173.9, 176.6, 179.3, 182, 184.7, 187.4, 190.1, 192.8, 195.5, 198.2, 200.9, 203.6, 206.3, 209, 211.7, 214.4, 217.1, 219.8, 222.5, 225.2, 227.9, 230.6, 233.3, 236, 238.7, 241.4, 244.1, 246.8, 249.5, 252.2, 254.9, 257.6, 260.3, 263, 265.7, 268.4, 271.1, 273.8, 289.6]
+            },
+            growth: {
+                yearly: [139, 244, 334, 414, 487, 555, 619, 680, 738, 793, 846, 897, 946, 994, 1040, 1085, 1128, 1170, 1211, 1251, 1290, 1328, 1365, 1401, 1436, 1470, 1503, 1536, 1568, 1600, 1631, 1662, 1692, 1721, 1750, 1779, 1807, 1835, 1862, 1889, 1916, 1942, 1968, 1994, 2020, 2045, 2070, 2095, 2120, 2145, 2170, 2195, 2220, 2245, 2270, 2295, 2320, 2345, 2370, 2395, 2420, 2445, 2470, 2495, 2520, 2545, 2570, 2595, 2620, 2645, 2670, 2695, 2720, 2745, 2770, 2795, 2820, 2845, 2870, 2895, 2920, 2945, 2970, 2995, 3020, 3045, 3070, 3095, 3120, 3145, 3170, 3195, 3220, 3245, 3270, 3295, 3320, 3345, 3370, 3526],
+                monthly: [15, 26.4, 36.1, 44.7, 52.6, 59.9, 66.8, 73.3, 79.5, 85.5, 91.2, 96.7, 102, 107.1, 112.1, 116.9, 121.5, 126.1, 130.5, 134.8, 139, 143.1, 147.1, 150.9, 154.7, 158.4, 162, 165.5, 168.9, 172.3, 175.7, 179, 182.2, 185.3, 188.4, 191.5, 194.5, 197.5, 200.4, 203.3, 206.2, 209, 211.8, 214.6, 217.4, 220.1, 222.8, 225.5, 228.2, 230.9, 233.6, 236.3, 239, 241.7, 244.4, 247.1, 249.8, 252.5, 255.2, 257.9, 260.6, 263.3, 266, 268.7, 271.4, 274.1, 276.8, 279.5, 282.2, 284.9, 287.6, 290.3, 293, 295.7, 298.4, 301.1, 303.8, 306.5, 309.2, 311.9, 314.6, 317.3, 320, 322.7, 325.4, 328.1, 330.8, 333.5, 336.2, 338.9, 341.6, 344.3, 347, 349.7, 352.4, 355.1, 357.8, 360.5, 363.2, 380.3]
+            }
+        };
+
+        function calculatePrice(plan, type, qty) {
+            if (qty <= 0) return 0;
+            const data = pricingData[plan][type];
+            if (qty <= data.length) return data[qty - 1];
+            
+            const basePrice = data[data.length - 1];
+            const extraQty = qty - data.length;
+            
+            let multiplier;
+            if (plan === 'starter') {
+                multiplier = (type === 'monthly') ? 2.6 : 26.0;
+            } else {
+                multiplier = (type === 'monthly') ? 2.4 : 22.0;
+            }
+            
+            return basePrice + (extraQty * multiplier);
+        }
+
         const translations = {
             en: {
                 header: "An upgrade that pays for itself",
@@ -228,7 +211,7 @@
                 setup: "Your Setup",
                 propCount: "How many properties do you have?",
                 bill: "Your current TouchStay bill",
-                prefilled: "Pre-filled based on your current property count",
+                prefilled: "Pre-filled with Legacy pricing for your property count",
                 extraValue: "Extra product/service value",
                 example: "ex: Late Check out / Early Check in fee",
                 calcTitle: "Our Calculations",
@@ -244,7 +227,7 @@
                 costProp: "Per Property",
                 breakeven: "Sell an average of <span id='resBreakeven' class='font-bold text-white underline underline-offset-2'></span> items per property each month to pay for your <span class='font-bold text-white'>entire</span> bill!",
                 extraIncome: "Estimated Extra Monthly Income",
-                incomeDesc: "This is your take-home profit after taxes, fees, and the software upgrade cost.",
+                incomeDesc: "Take-home profit after taxes, fees, and the software upgrade cost.",
                 annualIncome: "Total Extra Annual Income",
                 cta: "Upgrade & Get started with Store",
                 ctaSub: "Start earning more from every booking today."
@@ -256,7 +239,7 @@
                 setup: "Configurarea Ta",
                 propCount: "Câte proprietăți deții?",
                 bill: "Factura ta actuală TouchStay",
-                prefilled: "Completat automat în funcție de numărul de proprietăți",
+                prefilled: "Completat automat cu tariful Legacy pentru numărul tău de proprietăți",
                 extraValue: "Valoare produs/serviciu extra",
                 example: "ex: Taxă Late Check-out / Early Check-in",
                 calcTitle: "Calculele Noastre",
@@ -272,35 +255,15 @@
                 costProp: "Per Proprietate",
                 breakeven: "Vinde în medie <span id='resBreakeven' class='font-bold text-white underline underline-offset-2'></span> articole per proprietate pe lună pentru a-ți acoperi <span class='font-bold text-white'>întreaga</span> factură!",
                 extraIncome: "Venit lunar suplimentar estimat",
-                incomeDesc: "Acesta este câștigul tău net după taxe, comisioane bancare și upgrade.",
+                incomeDesc: "Câștigul tău net după taxe, comisioane și upgrade-ul software.",
                 annualIncome: "Venit anual suplimentar total",
                 cta: "Upgradează și Începe cu Store",
-                ctaSub: "Începe să câștigi mai mult de la fiecare rezervare astăzi."
+                ctaSub: "Închepe să câștigi mai mult de la fiecare rezervare astăzi."
             }
         };
 
         let currentLang = 'en';
         let billingCycle = 'monthly';
-
-        const pricingData = {
-            1: { growth: 15.0, current: 12.5 }, 2: { growth: 26.4, current: 19.0 }, 3: { growth: 36.1, current: 24.5 },
-            4: { growth: 44.7, current: 30.0 }, 5: { growth: 52.6, current: 35.5 }, 6: { growth: 59.9, current: 38.3 },
-            7: { growth: 66.8, current: 41.1 }, 8: { growth: 73.3, current: 43.9 }, 9: { growth: 79.5, current: 46.7 },
-            10: { growth: 85.5, current: 49.5 }, 11: { growth: 91.2, current: 53.0 }, 12: { growth: 96.8, current: 56.5 },
-            13: { growth: 102.2, current: 60.0 }, 14: { growth: 107.4, current: 63.5 }, 15: { growth: 112.5, current: 67.0 },
-            16: { growth: 117.4, current: 70.4 }, 17: { growth: 122.2, current: 73.8 }, 18: { growth: 126.9, current: 77.2 },
-            19: { growth: 131.5, current: 80.6 }, 20: { growth: 136.0, current: 84.0 }, 21: { growth: 140.4, current: 87.3 },
-            22: { growth: 144.7, current: 90.6 }, 23: { growth: 149.0, current: 93.9 }, 24: { growth: 153.1, current: 97.2 },
-            25: { growth: 157.2, current: 100.5 }, 26: { growth: 161.2, current: 103.7 }, 27: { growth: 165.2, current: 106.9 },
-            28: { growth: 169.1, current: 110.1 }, 29: { growth: 172.9, current: 113.3 }, 30: { growth: 176.7, current: 116.5 },
-            31: { growth: 180.4, current: 119.5 }, 32: { growth: 184.2, current: 122.5 }, 33: { growth: 187.9, current: 125.5 },
-            34: { growth: 191.6, current: 128.5 }, 35: { growth: 195.3, current: 131.5 }, 36: { growth: 199.0, current: 134.5 },
-            37: { growth: 202.7, current: 137.5 }, 38: { growth: 206.4, current: 140.5 }, 39: { growth: 209.9, current: 144.0 },
-            40: { growth: 213.3, current: 147.0 }, 41: { growth: 216.7, current: 150.0 }, 42: { growth: 220.1, current: 153.0 },
-            43: { growth: 223.4, current: 156.0 }, 44: { growth: 226.7, current: 159.0 }, 45: { growth: 230.0, current: 162.0 },
-            46: { growth: 233.2, current: 165.0 }, 47: { growth: 236.4, current: 168.0 }, 48: { growth: 239.6, current: 171.0 },
-            49: { growth: 242.8, current: 174.0 }, 50: { growth: 245.9, current: 177.0 }
-        };
 
         const inputs = {
             numProps: document.getElementById('numPropsInput'),
@@ -327,10 +290,8 @@
         function setLanguage(lang) {
             currentLang = lang;
             const t = translations[lang];
-            
             document.getElementById('btn-en').className = lang === 'en' ? 'px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white' : 'px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100';
             document.getElementById('btn-ro').className = lang === 'ro' ? 'px-3 py-1 text-sm font-medium rounded-md transition-colors bg-blue-600 text-white' : 'px-3 py-1 text-sm font-medium rounded-md transition-colors text-slate-600 hover:bg-slate-100';
-
             document.getElementById('t-header').innerText = t.header;
             document.getElementById('t-subheader').innerText = t.subheader;
             document.getElementById('t-growthNote').innerHTML = t.growthNote;
@@ -341,11 +302,8 @@
             document.getElementById('t-extraValue').innerText = t.extraValue;
             document.getElementById('t-example').innerText = t.example;
             document.getElementById('t-calcTitle').innerText = t.calcTitle;
-            
-            const assumpBtn = document.getElementById('toggleAssumptions');
-            const isAssumpHidden = document.getElementById('assumptionControls').classList.contains('hidden-controls');
-            assumpBtn.innerText = isAssumpHidden ? t.btnAssump : t.btnAssumpHide;
-
+            const isHidden = document.getElementById('assumptionControls').classList.contains('hidden-controls');
+            document.getElementById('toggleAssumptions').innerText = isHidden ? t.btnAssump : t.btnAssumpHide;
             document.getElementById('t-assumpStays').innerHTML = t.assumpStays;
             document.getElementById('t-assumpRate').innerHTML = t.assumpRate;
             document.getElementById('t-assumpMargin').innerHTML = t.assumpMargin;
@@ -360,7 +318,6 @@
             document.getElementById('t-annualIncome').innerText = t.annualIncome;
             document.getElementById('t-cta').innerText = t.cta;
             document.getElementById('t-ctaSub').innerText = t.ctaSub;
-
             calculate();
         }
 
@@ -368,91 +325,18 @@
             billingCycle = cycle;
             const btnM = document.getElementById('btn-monthly');
             const btnY = document.getElementById('btn-yearly');
-            
-            if(cycle === 'monthly') {
-                btnM.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all bg-blue-600 text-white';
-                btnY.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-700';
-                document.querySelectorAll('.unit-text').forEach(el => el.innerText = '/mo');
-            } else {
-                btnY.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all bg-blue-600 text-white';
-                btnM.className = 'px-3 py-1 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-700';
-                document.querySelectorAll('.unit-text').forEach(el => el.innerText = '/yr');
-            }
-            
+            btnM.className = cycle === 'monthly' ? 'px-3 py-1 text-xs font-bold rounded-md transition-all bg-blue-600 text-white' : 'px-3 py-1 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-700';
+            btnY.className = cycle === 'yearly' ? 'px-3 py-1 text-xs font-bold rounded-md transition-all bg-blue-600 text-white' : 'px-3 py-1 text-xs font-bold rounded-md transition-all text-slate-500 hover:text-slate-700';
+            document.querySelectorAll('.unit-text').forEach(el => el.innerText = cycle === 'monthly' ? '/mo' : '/yr');
             updateInvoiceDefault();
-            calculate();
-        }
-
-        function getPlanPrices(props) {
-            let data = { growth: 0, current: 0 };
-            if (props <= 50) {
-                data = { ...pricingData[props] };
-            } else {
-                const base50 = pricingData[50];
-                const extra = props - 50;
-                data = {
-                    growth: base50.growth + (extra * 3.1), 
-                    current: base50.current + (extra * 2.9)
-                };
-            }
-
-            // Apply 20% discount if yearly
-            if (billingCycle === 'yearly') {
-                data.growth = (data.growth * 12) * 0.8;
-                data.current = (data.current * 12) * 0.8;
-            }
-
-            return data;
         }
 
         function updateInvoiceDefault() {
             const props = Math.max(1, parseInt(inputs.numProps.value) || 1);
-            const data = getPlanPrices(props);
-            inputs.currentInvoice.value = data.current.toFixed(2);
-            inputs.currentInvoiceSlider.value = data.current;
-            
-            // Adjust slider range based on billing cycle
-            if (billingCycle === 'yearly') {
-                inputs.currentInvoiceSlider.max = 15000;
-            } else {
-                inputs.currentInvoiceSlider.max = 1500;
-            }
-        }
-
-        function init() {
-            const sync = (input, slider) => {
-                input.addEventListener('input', () => { slider.value = input.value; calculate(); });
-                slider.addEventListener('input', () => { input.value = slider.value; calculate(); });
-            };
-
-            sync(inputs.numProps, inputs.numPropsSlider);
-            sync(inputs.currentInvoice, inputs.currentInvoiceSlider);
-            sync(inputs.checkoutPrice, inputs.checkoutPriceSlider);
-
-            inputs.numPropsSlider.addEventListener('input', updateInvoiceDefault);
-            inputs.numProps.addEventListener('input', updateInvoiceDefault);
-
-            [inputs.stays, inputs.rate, inputs.margin].forEach(el => el.addEventListener('input', calculate));
-
-            document.getElementById('toggleAssumptions').addEventListener('click', function() {
-                const controls = document.getElementById('assumptionControls');
-                const statements = document.getElementById('assumptionStatements');
-                const isHidden = controls.classList.contains('hidden-controls');
-                const t = translations[currentLang];
-                
-                if(isHidden) {
-                    controls.classList.remove('hidden-controls');
-                    statements.classList.add('hidden-controls');
-                    this.innerText = t.btnAssumpHide;
-                } else {
-                    controls.classList.add('hidden-controls');
-                    statements.classList.remove('hidden-controls');
-                    this.innerText = t.btnAssump;
-                }
-            });
-
-            setLanguage('en');
-            setBilling('monthly');
+            const starterPrice = calculatePrice('starter', billingCycle, props);
+            inputs.currentInvoice.value = starterPrice.toFixed(2);
+            inputs.currentInvoiceSlider.value = starterPrice;
+            calculate();
         }
 
         function format(num) {
@@ -461,36 +345,28 @@
 
         function calculate() {
             const props = Math.max(1, parseInt(inputs.numProps.value) || 1);
-            const userCurrentInvoice = parseFloat(inputs.currentInvoice.value) || 0;
+            const userCurrentBill = parseFloat(inputs.currentInvoice.value) || 0;
             const checkoutPrice = parseFloat(inputs.checkoutPrice.value) || 0;
             const stays = parseFloat(inputs.stays.value);
             const rate = parseFloat(inputs.rate.value) / 100;
             const margin = parseFloat(inputs.margin.value) / 100;
 
-            const data = getPlanPrices(props);
+            const growthPriceForSelectedProps = calculatePrice('growth', billingCycle, props);
+            const totalExtraCost = Math.max(0, growthPriceForSelectedProps - userCurrentBill);
             
-            // Cost is yearly if yearly, monthly if monthly
-            const totalExtraCost = Math.max(0, data.growth - userCurrentInvoice);
-            const newTotalInvoice = userCurrentInvoice + totalExtraCost;
-
-            // Monthly revenue remains monthly for calculation
             const totalStaysPerMonth = props * stays;
             const projectedSalesPerMonth = totalStaysPerMonth * rate;
             const netMonthlySalesIncome = projectedSalesPerMonth * checkoutPrice * margin;
             
-            // Net monthly gain depends on billing cycle split
-            const extraCostPerMonth = billingCycle === 'yearly' ? (totalExtraCost / 12) : totalExtraCost;
-            const netMonthlyGain = netMonthlySalesIncome - extraCostPerMonth;
-            
+            const extraCostAmortized = billingCycle === 'yearly' ? (totalExtraCost / 12) : totalExtraCost;
+            const netMonthlyGain = netMonthlySalesIncome - extraCostAmortized;
             const annualProfit = netMonthlyGain * 12;
 
-            // Breakeven
             let breakevenPerProp = 0;
             const profitPerUnit = checkoutPrice * margin;
             if (profitPerUnit > 0 && props > 0) {
-                // How many units to cover the total bill (monthly basis)
-                const monthlyTotalBill = billingCycle === 'yearly' ? (newTotalInvoice / 12) : newTotalInvoice;
-                const totalSalesNeeded = monthlyTotalBill / profitPerUnit;
+                const monthlyGrowthTotal = billingCycle === 'yearly' ? (growthPriceForSelectedProps / 12) : growthPriceForSelectedProps;
+                const totalSalesNeeded = monthlyGrowthTotal / profitPerUnit;
                 breakevenPerProp = totalSalesNeeded / props;
             }
 
@@ -502,14 +378,9 @@
             const bEv = document.getElementById('resBreakeven');
             if (bEv) bEv.innerText = breakevenPerProp < 1 ? breakevenPerProp.toFixed(1) : Math.ceil(breakevenPerProp);
 
-            const sStays = document.getElementById('statStays');
-            const sRate = document.getElementById('statRate');
-            const sMargin = document.getElementById('statMargin');
-            
-            if (sStays) sStays.innerText = stays;
-            if (sRate) sRate.innerText = (rate * 100).toFixed(0);
-            if (sMargin) sMargin.innerText = (margin * 100).toFixed(0);
-            
+            document.getElementById('statStays').innerText = stays;
+            document.getElementById('statRate').innerText = (rate * 100).toFixed(0);
+            document.getElementById('statMargin').innerText = (margin * 100).toFixed(0);
             displays.valStays.innerText = stays;
             displays.valRate.innerText = (rate * 100).toFixed(0);
             displays.valMargin.innerText = (margin * 100).toFixed(0);
@@ -522,6 +393,45 @@
                 profitEl.classList.add('text-emerald-400');
                 profitEl.classList.remove('text-slate-500');
             }
+        }
+
+        function init() {
+            const sync = (input, slider) => {
+                input.addEventListener('input', () => { slider.value = input.value; calculate(); });
+                slider.addEventListener('input', () => { input.value = slider.value; calculate(); });
+            };
+            
+            const handlePropsChange = (val) => {
+                inputs.numProps.value = val;
+                inputs.numPropsSlider.value = val;
+                updateInvoiceDefault();
+            };
+
+            inputs.numProps.addEventListener('input', (e) => handlePropsChange(e.target.value));
+            inputs.numPropsSlider.addEventListener('input', (e) => handlePropsChange(e.target.value));
+
+            sync(inputs.currentInvoice, inputs.currentInvoiceSlider);
+            sync(inputs.checkoutPrice, inputs.checkoutPriceSlider);
+            
+            [inputs.stays, inputs.rate, inputs.margin].forEach(el => el.addEventListener('input', calculate));
+            
+            document.getElementById('toggleAssumptions').addEventListener('click', function() {
+                const controls = document.getElementById('assumptionControls');
+                const statements = document.getElementById('assumptionStatements');
+                const isHidden = controls.classList.contains('hidden-controls');
+                const t = translations[currentLang];
+                if(isHidden) {
+                    controls.classList.remove('hidden-controls');
+                    statements.classList.add('hidden-controls');
+                    this.innerText = t.btnAssumpHide;
+                } else {
+                    controls.classList.add('hidden-controls');
+                    statements.classList.remove('hidden-controls');
+                    this.innerText = t.btnAssump;
+                }
+            });
+            setLanguage('en');
+            setBilling('monthly');
         }
 
         document.addEventListener('DOMContentLoaded', init);
